@@ -213,7 +213,12 @@ fn main() {
             .allow_hyphen_values(true) // Ensure negative values are allowed
             .require_equals(true) // Require `=` for clarity, e.g., `-o=-20`
             .help("Set curve offset"))
-        .arg(Arg::new("corecount").short('c').long("corecount").num_args(1).default_value("1").help("Set offset to cores [0..corecount]"))
+        .arg(Arg::new("corecount")
+            .short('c')
+            .long("corecount")
+            .num_args(1)
+            .default_value("8") // Set default value to 8
+            .help("Set offset to cores [0..corecount]"))
         .arg(Arg::new("reset").short('r').long("reset").action(ArgAction::SetTrue).help("Reset offsets to 0"))
         .get_matches();
 
