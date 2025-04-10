@@ -16,15 +16,14 @@ Run it with the following options:
 
 -  `-l`, `--list`                   List curve offsets
 -  `-o`, `--offset=<offset>`        Set curve offset
--  `-c`, `--corecount <corecount>`  Set offset to cores [0..corecount] (default: 1)
 -  `-r`, `--reset`                  Reset offsets to 0
 -  `-h`, `--help`                   Print help
 
 Example:
 ```bash
-sudo ./ruv -o=-30 -c 8
+sudo ./ruv --offset=-30
 ```
-This sets a curve offset of `-30` for the first 8 cores.
+This sets a curve offset of `-30` for all 8 cores (core count is hardwired to 8).
 
 ## Acknowledgment
 This program is based on the Python version of the Ryzen undervolting utility available at [svenlange2/Ryzen-5800x3d-linux-undervolting](https://github.com/svenlange2/Ryzen-5800x3d-linux-undervolting). Special thanks to the original author for their work.

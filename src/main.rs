@@ -158,7 +158,7 @@ fn get_core_offset(core_id: u32) -> Result<i32, SmuError> {
     // The format appears to be specific to the Ryzen SMU interface.
     // Bits 20-22: Core ID within the CCD (0-7) -> (core_id & 7) << 20
     // Bit 23: CCD ID (0 or 1) -> ((core_id & 8) >> 3) << 23 -> simplified as (core_id & 8) << 20
-    // Combined: ((core_id & 8) << 20) | ((core_id & 7) << 20) -> simplified as ((core_id & 8) << 5 | (core_id & 7)) << 20
+    // Combined: ((core_id & 8) << 5 | (core_id & 7)) << 20
     // Example: core_id 0 -> CCD 0, Core 0 -> arg0 = 0
     //          core_id 7 -> CCD 0, Core 7 -> arg0 = (0 | 7) << 20 = 7 * 2^20
     //          core_id 8 -> CCD 1, Core 0 -> arg0 = (8 << 5 | 0) << 20 = 256 << 20
@@ -213,20 +213,11 @@ fn main() {
             .allow_hyphen_values(true) // Ensure negative values are allowed
             .require_equals(true) // Require `=` for clarity, e.g., `-o=-20`
             .help("Set curve offset"))
-        .arg(Arg::new("corecount")
-            .short('c')
-            .long("corecount")
-            .num_args(1)
-            .default_value("8") // Set default value to 8
-            .help("Set offset to cores [0..corecount]"))
         .arg(Arg::new("reset").short('r').long("reset").action(ArgAction::SetTrue).help("Reset offsets to 0"))
         .get_matches();
 
-    let core_count_str = matches.get_one::<String>("corecount").expect("Default value should exist");
-    let core_count: u32 = core_count_str.parse().unwrap_or_else(|_| {
-        eprintln!("Warning: Invalid core count '{}', defaulting to 1.", core_count_str);
-        1
-    });
+    let core_count: u32 = 8; // Hardwired core count to 8
+
     if matches.get_flag("list") {
         for c in 0..core_count {
             match get_core_offset(c) {
@@ -249,17 +240,6 @@ fn main() {
     }
 
     if let Some(&offset) = matches.get_one::<i32>("offset") {
-        // Note: Some guides suggest only negative offsets are valid for undervolting.
-        // The driver might accept positive values too, but the tool's intent seems to be undervolting.
-        // We'll keep the check for now, but it could be removed if positive offsets are desired.
-        if offset > 0 {
-            eprintln!("Warning: Positive offsets might not be supported or could increase voltage. Proceeding anyway.");
-        }
-        // if offset >= 0 {
-        //     eprintln!("Error: Offset must be negative for undervolting.");
-        //     std::process::exit(1);
-        // }
-
         println!("Setting offset {} for cores 0..{}", offset, core_count);
         let mut success = true;
         for c in 0..core_count {
@@ -282,7 +262,6 @@ fn main() {
             std::process::exit(1);
         }
     } else if !matches.get_flag("list") && !matches.get_flag("reset") {
-        // Only print help message if no other action was taken
         eprintln!("No action specified. Use --list, --reset, or --offset. Use --help for more info.");
         std::process::exit(1);
     }
