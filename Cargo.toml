@@ -1,0 +1,12 @@
+[package]
+name = "ruv"
+version = "0.1.0"
+edition = "2021"
+
+description = "A Rust project named ruv"
+authors = ["Irving Bermudez <bigchirv@gmail.com>"]
+license = "MIT"
+
+[dependencies]
+clap = "4.0"
+libc = "0.2"
