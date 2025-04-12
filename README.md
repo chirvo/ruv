@@ -1,6 +1,6 @@
 # ruv
 
-This provides a Rust-based utility for undervolting Ryzen processors using the Precision Boost Overdrive (PBO) feature. It interacts with the Ryzen SMU driver to read and modify curve offsets for individual cores.
+This provides a Rust-based utility for undervolting Ryzen 5800x3d processors using the Precision Boost Overdrive (PBO) feature. It interacts with the [Ryzen SMU driver](https://github.com/leogx9r/ryzen_smu) to read and modify curve offsets for individual cores.
 
 ## Features
 - List current curve offsets for specified cores.
@@ -9,7 +9,28 @@ This provides a Rust-based utility for undervolting Ryzen processors using the P
 
 ## Requirements
 - Root privileges are required to run the script.
-- The Ryzen SMU driver must be loaded at `/sys/kernel/ryzen_smu_drv/` [leogx9r/ryzen_smu](https://github.com/leogx9r/ryzen_smu).
+- The Ryzen SMU driver ([leogx9r/ryzen_smu](https://github.com/leogx9r/ryzen_smu)) must be available and loaded.
+
+## Installation
+
+To install the `ruv` utility, follow these steps:
+
+1. Build the project:
+   ```bash
+   make
+   ```
+
+2. Install the binary to `/usr/local/bin`:
+   ```bash
+   sudo make install
+   ```
+
+3. To clean up the build artifacts, you can run:
+   ```bash
+   make clean
+   ```
+
+After installation, you can run the `ruv` utility from anywhere using the `ruv` command.
 
 ## Usage
 Run it with the following options:
@@ -21,7 +42,7 @@ Run it with the following options:
 
 Example:
 ```bash
-sudo ./ruv --offset=-30
+sudo ruv --offset=-30
 ```
 This sets a curve offset of `-30` for all 8 cores (core count is hardwired to 8).
 
