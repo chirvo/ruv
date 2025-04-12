@@ -8,6 +8,7 @@ This provides a Rust-based utility for undervolting Ryzen 5800x3d processors usi
 - Reset all offsets to zero.
 
 ## Requirements
+- rust and cargo.
 - Root privileges are required to run the script.
 - The Ryzen SMU driver ([leogx9r/ryzen_smu](https://github.com/leogx9r/ryzen_smu)) must be available and loaded.
 
