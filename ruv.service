@@ -1,0 +1,13 @@
+[Unit]
+Description=Ryzen 5800X3D undervolt command
+After=suspend.target
+
+[Service]
+User=root
+Type=oneshot
+# Read offset from file, use -20 if not found/invalid, then apply it
+ExecStart=/bin/sh -c 'OFFSET=$(cat /etc/default/ruv_offset 2>/dev/null | grep -E ^-[0-9]+$ || echo -20); /usr/local/bin/ruv --offset=$$OFFSET'
+TimeoutSec=0
+
+[Install]
+WantedBy=multi-user.target suspend.target

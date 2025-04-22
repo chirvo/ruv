@@ -1,5 +1,5 @@
 // Import necessary modules and libraries
-use std::fs::{File, OpenOptions};
+use std::fs::{self, File, OpenOptions}; // Added fs
 use std::fmt;
 use std::io::{self, Read, Write};
 use std::path::{Path, PathBuf};
@@ -261,8 +261,14 @@ fn main() {
             eprintln!("One or more cores failed to update.");
             std::process::exit(1);
         }
-    } else if !matches.get_flag("list") && !matches.get_flag("reset") {
-        eprintln!("No action specified. Use --list, --reset, or --offset. Use --help for more info.");
-        std::process::exit(1);
+    } else {
+        // Default action: If no specific action is given (--list, --reset, --offset), list the current offsets.
+        println!("No action specified, listing current offsets by default:");
+        for c in 0..core_count {
+            match get_core_offset(c) {
+                Ok(offset) => println!("Core {}: {}", c, offset),
+                Err(e) => eprintln!("Error getting offset for Core {}: {}", c, e),
+            }
+        }
     }
 }
