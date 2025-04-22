@@ -1,5 +1,5 @@
 // Import necessary modules and libraries
-use std::fs::{self, File, OpenOptions}; // Added fs
+use std::fs::{File, OpenOptions}; // Added fs
 use std::fmt;
 use std::io::{self, Read, Write};
 use std::path::{Path, PathBuf};
