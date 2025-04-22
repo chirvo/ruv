@@ -1,5 +1,8 @@
 # Simple Makefile to compile ruv.rs
 
+# Deprecation notice
+$(error ERROR: This Makefile is deprecated. Please use Ninja with build.ninja instead.)
+
 # Compiler and flags
 CARGO := cargo
 
